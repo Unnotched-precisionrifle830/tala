@@ -1,0 +1,16 @@
+[package]
+name = "tala-daemon"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-store = { path = "../tala-store" }
+tala-intent = { path = "../tala-intent" }
+tala-graph = { path = "../tala-graph" }
+tala-embed = { path = "../tala-embed" }
+tala-weave = { path = "../tala-weave" }
+tala-kai = { path = "../tala-kai" }
+
+[dev-dependencies]
+tempfile = { workspace = true }

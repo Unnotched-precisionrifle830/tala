@@ -1,0 +1,15 @@
+[package]
+name = "tala-graph"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+
+[dev-dependencies]
+criterion = { workspace = true }
+rand = { workspace = true }
+
+[[bench]]
+name = "graph_bench"
+harness = false

@@ -1,0 +1,16 @@
+[package]
+name = "tala-sim"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "tala-sim"
+path = "src/main.rs"
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-daemon = { path = "../tala-daemon" }
+tala-store = { path = "../tala-store" }
+tala-intent = { path = "../tala-intent" }
+tiny_http = { workspace = true }
+rand = { workspace = true }

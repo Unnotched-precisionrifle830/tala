@@ -1,0 +1,9 @@
+[package]
+name = "tala-cli"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-daemon = { path = "../tala-daemon" }
+tala-intent = { path = "../tala-intent" }

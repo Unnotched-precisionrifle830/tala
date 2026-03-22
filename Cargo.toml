@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/tala-core",
+    "crates/tala-wire",
+    "crates/tala-embed",
+    "crates/tala-graph",
+    "crates/tala-store",
+    "crates/tala-weave",
+    "crates/tala-intent",
+    "crates/tala-kai",
+    "crates/tala-daemon",
+    "crates/tala-net",
+    "crates/tala-cli",
+    "crates/tala-sim",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.82"
+
+[workspace.dependencies]
+uuid = { version = "1", features = ["v4"] }
+thiserror = "2"
+rand = { version = "0.8", features = ["small_rng"] }
+rayon = "1"
+criterion = { version = "0.5", features = ["html_reports"] }
+memmap2 = "0.9"
+tempfile = "3"
+tiny_http = "0.12"

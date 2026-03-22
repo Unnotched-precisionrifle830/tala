@@ -1,0 +1,22 @@
+# Build artifacts
+target/
+
+# Version control
+.git/
+.gitignore
+
+# Development config
+*.md
+*.toml
+!Cargo.toml
+!Cargo.lock
+!rust-toolchain.toml
+
+# Deployment (not needed inside container image)
+deploy/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp

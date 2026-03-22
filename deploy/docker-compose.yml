@@ -1,0 +1,122 @@
+x-sim-defaults: &sim-defaults
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile
+  restart: unless-stopped
+  networks:
+    - tala-net
+
+services:
+  sim-incident:
+    <<: *sim-defaults
+    container_name: sim-incident
+    environment:
+      TALA_VERTICAL: incident
+      TALA_RATE_MS: ${INCIDENT_RATE_MS:-400}
+      TALA_CHAOS_INTERVAL_S: ${CHAOS_INTERVAL_S:-60}
+      TALA_CHAOS_PROBABILITY: ${CHAOS_PROBABILITY:-0.15}
+    ports:
+      - "9101:9090"
+    volumes:
+      - incident-data:/data
+
+  sim-deploy:
+    <<: *sim-defaults
+    container_name: sim-deploy
+    environment:
+      TALA_VERTICAL: deploy
+      TALA_RATE_MS: ${DEPLOY_RATE_MS:-300}
+      TALA_CHAOS_INTERVAL_S: ${CHAOS_INTERVAL_S:-60}
+      TALA_CHAOS_PROBABILITY: ${CHAOS_PROBABILITY:-0.15}
+    ports:
+      - "9102:9090"
+    volumes:
+      - deploy-data:/data
+
+  sim-observe:
+    <<: *sim-defaults
+    container_name: sim-observe
+    environment:
+      TALA_VERTICAL: observe
+      TALA_RATE_MS: ${OBSERVE_RATE_MS:-200}
+      TALA_CHAOS_INTERVAL_S: ${CHAOS_INTERVAL_S:-60}
+      TALA_CHAOS_PROBABILITY: ${CHAOS_PROBABILITY:-0.15}
+    ports:
+      - "9103:9090"
+    volumes:
+      - observe-data:/data
+
+  sim-provision:
+    <<: *sim-defaults
+    container_name: sim-provision
+    environment:
+      TALA_VERTICAL: provision
+      TALA_RATE_MS: ${PROVISION_RATE_MS:-350}
+      TALA_CHAOS_INTERVAL_S: ${CHAOS_INTERVAL_S:-60}
+      TALA_CHAOS_PROBABILITY: ${CHAOS_PROBABILITY:-0.15}
+    ports:
+      - "9104:9090"
+    volumes:
+      - provision-data:/data
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: tala-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=30d"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    networks:
+      - tala-net
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: tala-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-tala-demo}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - tala-net
+
+  dashboard:
+    image: nginx:1.25-alpine
+    container_name: tala-dashboard
+    volumes:
+      - ./dashboard:/usr/share/nginx/html:ro
+      - ./dashboard/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - tala-net
+
+volumes:
+  incident-data:
+  deploy-data:
+  observe-data:
+  provision-data:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  tala-net:
+    driver: bridge

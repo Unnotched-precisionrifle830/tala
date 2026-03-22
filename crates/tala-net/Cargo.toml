@@ -1,0 +1,11 @@
+[package]
+name = "tala-net"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-wire = { path = "../tala-wire" }
+
+[dev-dependencies]
+rand = { workspace = true }

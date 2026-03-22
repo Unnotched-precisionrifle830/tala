@@ -1,0 +1,29 @@
+# ── Build artifacts ────────────────────────────
+target/
+**/*.rs.bk
+
+# ── IDE / Editor ──────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Environment ───────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Claude Code (development tooling) ────────
+.claude/
+CLAUDE.md
+
+# ── Internal specifications ───────────────────
+specs/
+
+# ── OS artifacts ──────────────────────────────
+*.pid
+*.seed
+*.log

@@ -1,0 +1,10 @@
+[package]
+name = "tala-kai"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-graph = { path = "../tala-graph" }
+tala-embed = { path = "../tala-embed" }
+rand = { workspace = true }

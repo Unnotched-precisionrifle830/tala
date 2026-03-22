@@ -1,0 +1,8 @@
+[package]
+name = "tala-intent"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+tala-embed = { path = "../tala-embed" }

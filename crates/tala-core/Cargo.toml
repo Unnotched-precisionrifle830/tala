@@ -1,0 +1,8 @@
+[package]
+name = "tala-core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+uuid = { workspace = true }
+thiserror = { workspace = true }

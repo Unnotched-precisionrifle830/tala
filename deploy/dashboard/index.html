@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALA Intent Observatory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    /* ═══════════════════════════════════════════════════════
+       LANDING OVERLAY
+       ═══════════════════════════════════════════════════════ */
+    .landing {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+    }
+    .landing.exiting {
+        opacity: 0;
+        transform: scale(0.98) translateY(-12px);
+        pointer-events: none;
+    }
+    .landing.hidden {
+        display: none;
+    }
+
+    .landing-scroll {
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3rem 2rem 2rem;
+    }
+
+    /* ── Brand Showcase ─────────────────────────── */
+    .brand-showcase {
+        text-align: center;
+        padding: 2rem 0 1rem;
+        position: relative;
+    }
+
+    .brand-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(37, 99, 235, 0.06) 0%,
+            rgba(124, 58, 237, 0.03) 35%,
+            transparent 65%
+        );
+        pointer-events: none;
+        animation: brandGlow 10s ease-in-out infinite alternate;
+    }
+    @keyframes brandGlow {
+        0%   { opacity: 0.5; transform: translate(-50%, -55%) scale(1); }
+        100% { opacity: 1;   transform: translate(-50%, -55%) scale(1.12); }
+    }
+
+    .landing-logo {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 2px 12px rgba(37, 99, 235, 0.08));
+        animation: logoFloat 6s ease-in-out infinite;
+    }
+    @keyframes logoFloat {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-6px); }
+    }
+
+    .landing-title {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #1a1d23;
+        letter-spacing: 0.14em;
+        line-height: 1;
+        margin-top: 1.25rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .landing-subtitle {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #8b929a;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-top: 0.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .landing-tagline {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.88rem;
+        font-weight: 400;
+        color: #b8bfc7;
+        font-style: italic;
+        margin-top: 0.6rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ── Living Topology ────────────────────────── */
+    .topology-section {
+        margin: 2.5rem 0 1.5rem;
+    }
+
+    .topology-section-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.6rem;
+        font-weight: 600;
+        color: #b8bfc7;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .topology-container {
+        position: relative;
+        max-width: 820px;
+        margin: 0 auto;
+    }
+
+    .topology-svg {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Edge flow animation */
+    .topo-edge {
+        stroke-dasharray: 5 8;
+        animation: edgeFlow 2s linear infinite;
+    }
+    @keyframes edgeFlow {
+        to { stroke-dashoffset: -13; }
+    }
+
+    /* Particle glow */
+    .topo-particle {
+        filter: drop-shadow(0 0 3px currentColor);
+    }
+
+    /* Node pulse */
+    @keyframes nodePulse {
+        0%, 100% { r: 5; opacity: 0.3; }
+        50%      { r: 8; opacity: 0; }
+    }
+
+    /* Center ring spin */
+    @keyframes centerSpin {
+        from { transform-origin: 410px 235px; transform: rotate(0deg); }
+        to   { transform-origin: 410px 235px; transform: rotate(360deg); }
+    }
+    .center-ring-outer {
+        animation: centerSpin 60s linear infinite;
+    }
+
+    /* ── Story Section ──────────────────────────── */
+    .story-section {
+        max-width: 640px;
+        margin: 0 auto 2rem;
+    }
+
+    .story-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.6rem;
+        font-weight: 600;
+        color: #b8bfc7;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        margin-bottom: 0.6rem;
+    }
+
+    .story-section h2 {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1d23;
+        margin-bottom: 0.6rem;
+        line-height: 1.4;
+    }
+
+    .story-section p {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: #5c6370;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+    }
+
+    .story-section strong {
+        color: #1a1d23;
+        font-weight: 600;
+    }
+
+    .story-section code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8em;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 0.12em 0.35em;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .story-divider {
+        width: 40px;
+        height: 2px;
+        background: #e8ecf1;
+        margin: 1.5rem 0;
+        border-radius: 1px;
+    }
+
+    /* ── Pillars ─────────────────────────────────── */
+    .landing-pillars {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .pillar {
+        padding: 1.15rem 0.85rem;
+        border: 1px solid #e8ecf1;
+        border-radius: 12px;
+        background: #fafbfc;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pillar:hover {
+        border-color: #d8dce3;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .pillar-icon {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #2563eb;
+        background: #eff6ff;
+        display: inline-block;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.04em;
+    }
+
+    .pillar h3 {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #1a1d23;
+        margin-bottom: 0.3rem;
+    }
+
+    .pillar p {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 400;
+        color: #8b929a;
+        line-height: 1.5;
+    }
+
+    /* ── Enter Button ────────────────────────────── */
+    .landing-enter-wrap {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .landing-enter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #ffffff;
+        background: #2563eb;
+        border: none;
+        border-radius: 10px;
+        padding: 0.85rem 2.2rem;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2),
+                    0 4px 12px rgba(37, 99, 235, 0.15);
+        letter-spacing: 0.02em;
+    }
+    .landing-enter-btn:hover {
+        background: #1d4ed8;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25),
+                    0 8px 24px rgba(37, 99, 235, 0.2);
+        transform: translateY(-1px);
+    }
+    .landing-enter-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+    }
+    .landing-enter-btn svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.2s ease;
+    }
+    .landing-enter-btn:hover svg {
+        transform: translateX(3px);
+    }
+
+    .landing-footer {
+        text-align: center;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.68rem;
+        color: #b8bfc7;
+        font-style: italic;
+        padding-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+        .landing-scroll { padding: 2rem 1.25rem; }
+        .landing-logo { width: 100px; height: 100px; }
+        .landing-title { font-size: 2rem; }
+        .landing-pillars { grid-template-columns: 1fr; }
+        .topology-container { overflow-x: auto; }
+    }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════
+         LANDING PAGE
+         ═══════════════════════════════════════════════════ -->
+    <div class="landing" id="landing">
+    <div class="landing-scroll">
+
+        <!-- Brand Showcase -->
+        <div class="brand-showcase">
+            <div class="brand-glow"></div>
+            <img src="logo.svg" alt="TALA" class="landing-logo">
+            <h1 class="landing-title">TALA</h1>
+            <p class="landing-subtitle">Intent-Native Narrative Execution Layer</p>
+            <p class="landing-tagline">Remember the why.</p>
+        </div>
+
+        <!-- Living Topology -->
+        <div class="topology-section">
+            <div class="topology-section-label">Live Infrastructure Topology</div>
+            <div class="topology-container">
+                <svg class="topology-svg" viewBox="0 0 820 470" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradients for edges -->
+                        <linearGradient id="edge-med" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#2563eb" stop-opacity="0.15"/>
+                            <stop offset="100%" stop-color="#2563eb" stop-opacity="0.4"/>
+                        </linearGradient>
+                        <linearGradient id="edge-fin" x1="1" y1="0" x2="0" y2="0">
+                            <stop offset="0%" stop-color="#16a34a" stop-opacity="0.15"/>
+                            <stop offset="100%" stop-color="#16a34a" stop-opacity="0.4"/>
+                        </linearGradient>
+                        <linearGradient id="edge-ecm" x1="1" y1="1" x2="0" y2="0">
+                            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+                            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.4"/>
+                        </linearGradient>
+                        <linearGradient id="edge-gme" x1="0" y1="1" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#ea580c" stop-opacity="0.15"/>
+                            <stop offset="100%" stop-color="#ea580c" stop-opacity="0.4"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Edge paths (vertical → center, for particle flow direction) -->
+                    <path id="path-med" d="M 168,105 C 240,140 330,190 388,222" stroke="url(#edge-med)" stroke-width="2" fill="none" class="topo-edge"/>
+                    <path id="path-fin" d="M 652,105 C 580,140 490,190 432,222" stroke="url(#edge-fin)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-0.5s"/>
+                    <path id="path-ecm" d="M 652,365 C 580,330 490,280 432,248" stroke="url(#edge-ecm)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-1s"/>
+                    <path id="path-gme" d="M 168,365 C 240,330 330,280 388,248" stroke="url(#edge-gme)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-1.5s"/>
+
+                    <!-- Internal subsystem connectors -->
+                    <line x1="370" y1="215" x2="310" y2="175" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 4"/>
+                    <line x1="450" y1="215" x2="510" y2="175" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 4"/>
+                    <line x1="370" y1="255" x2="310" y2="295" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 4"/>
+                    <line x1="450" y1="255" x2="510" y2="295" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 4"/>
+
+                    <!-- ── Center Hub ── -->
+                    <!-- Outer decorative ring -->
+                    <circle class="center-ring-outer" cx="410" cy="235" r="52" fill="none" stroke="#e8ecf1" stroke-width="1" stroke-dasharray="3 6"/>
+                    <!-- Inner ring -->
+                    <circle cx="410" cy="235" r="40" fill="#ffffff" stroke="#d8dce3" stroke-width="1.5"/>
+                    <!-- Accent ring -->
+                    <circle cx="410" cy="235" r="34" fill="none" stroke="#2563eb" stroke-width="0.5" opacity="0.3"/>
+                    <!-- Mini orbital nodes (echoing logo) -->
+                    <circle cx="444" cy="235" r="3" fill="#2563eb" opacity="0.6"/>
+                    <circle cx="427" cy="206" r="3" fill="#1a1d23" opacity="0.4"/>
+                    <circle cx="393" cy="206" r="3" fill="#2563eb" opacity="0.6"/>
+                    <circle cx="376" cy="235" r="3" fill="#1a1d23" opacity="0.4"/>
+                    <circle cx="393" cy="264" r="3" fill="#2563eb" opacity="0.6"/>
+                    <circle cx="427" cy="264" r="3" fill="#1a1d23" opacity="0.4"/>
+                    <!-- Center label -->
+                    <text x="410" y="232" text-anchor="middle" font-family="'Inter', sans-serif" font-size="11" font-weight="700" fill="#1a1d23" letter-spacing="0.12em">TALA</text>
+                    <text x="410" y="246" text-anchor="middle" font-family="'Inter', sans-serif" font-size="7" font-weight="500" fill="#8b929a" letter-spacing="0.06em">NARRATIVE HUB</text>
+
+                    <!-- ── Subsystem Nodes ── -->
+                    <!-- Pipeline (top-left inner) -->
+                    <circle cx="310" cy="170" r="16" fill="#fafbfc" stroke="#d8dce3" stroke-width="1"/>
+                    <text x="310" y="168" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="600" fill="#5c6370">PIPE</text>
+                    <text x="310" y="177" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6.5" font-weight="600" fill="#2563eb" id="topo-pipe-rate">--</text>
+
+                    <!-- HNSW (top-right inner) -->
+                    <circle cx="510" cy="170" r="16" fill="#fafbfc" stroke="#d8dce3" stroke-width="1"/>
+                    <text x="510" y="168" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="600" fill="#5c6370">HNSW</text>
+                    <text x="510" y="177" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6.5" font-weight="600" fill="#7c3aed" id="topo-hnsw-size">--</text>
+
+                    <!-- WAL (bottom-left inner) -->
+                    <circle cx="310" cy="300" r="16" fill="#fafbfc" stroke="#d8dce3" stroke-width="1"/>
+                    <text x="310" y="298" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="600" fill="#5c6370">WAL</text>
+                    <text x="310" y="307" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6.5" font-weight="600" fill="#16a34a" id="topo-wal-count">--</text>
+
+                    <!-- Graph (bottom-right inner) -->
+                    <circle cx="510" cy="300" r="16" fill="#fafbfc" stroke="#d8dce3" stroke-width="1"/>
+                    <text x="510" y="298" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="600" fill="#5c6370">GRAPH</text>
+                    <text x="510" y="307" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="6.5" font-weight="600" fill="#ea580c" id="topo-graph-nodes">--</text>
+
+                    <!-- ── Domain Nodes ── -->
+                    <!-- Incident Response (top-left) -->
+                    <rect x="95" y="65" width="148" height="80" rx="10" fill="#ffffff" stroke="#dc2626" stroke-width="1.5" opacity="0.9"/>
+                    <rect x="95" y="65" width="148" height="3" rx="1.5" fill="#dc2626"/>
+                    <circle cx="116" cy="88" r="5" fill="#dc2626" opacity="0.15"/>
+                    <circle cx="116" cy="88" r="5" fill="none" stroke="#dc2626" stroke-width="1" opacity="0.5">
+                        <animate attributeName="r" values="5;8;5" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="116" cy="88" r="3" fill="#dc2626"/>
+                    <text x="128" y="91" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#1a1d23" letter-spacing="0.06em">INCIDENT</text>
+                    <text x="113" y="110" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">intents</text>
+                    <text x="170" y="110" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#1a1d23" id="topo-med-intents">--</text>
+                    <text x="113" y="125" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">rate</text>
+                    <text x="170" y="125" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#dc2626" id="topo-med-rate">-- /s</text>
+
+                    <!-- Financial (top-right) -->
+                    <rect x="577" y="65" width="148" height="80" rx="10" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" opacity="0.9"/>
+                    <rect x="577" y="65" width="148" height="3" rx="1.5" fill="#16a34a"/>
+                    <circle cx="598" cy="88" r="5" fill="#16a34a" opacity="0.15"/>
+                    <circle cx="598" cy="88" r="5" fill="none" stroke="#16a34a" stroke-width="1" opacity="0.5">
+                        <animate attributeName="r" values="5;8;5" dur="2.5s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="598" cy="88" r="3" fill="#16a34a"/>
+                    <text x="610" y="91" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#1a1d23" letter-spacing="0.06em">DEPLOY</text>
+                    <text x="595" y="110" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">intents</text>
+                    <text x="652" y="110" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#1a1d23" id="topo-fin-intents">--</text>
+                    <text x="595" y="125" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">rate</text>
+                    <text x="652" y="125" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#16a34a" id="topo-fin-rate">-- /s</text>
+
+                    <!-- Observability (bottom-right) -->
+                    <rect x="577" y="325" width="148" height="80" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5" opacity="0.9"/>
+                    <rect x="577" y="325" width="148" height="3" rx="1.5" fill="#2563eb"/>
+                    <circle cx="598" cy="348" r="5" fill="#2563eb" opacity="0.15"/>
+                    <circle cx="598" cy="348" r="5" fill="none" stroke="#2563eb" stroke-width="1" opacity="0.5">
+                        <animate attributeName="r" values="5;8;5" dur="3.2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="3.2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="598" cy="348" r="3" fill="#2563eb"/>
+                    <text x="610" y="351" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#1a1d23" letter-spacing="0.06em">OBSERVE</text>
+                    <text x="595" y="370" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">intents</text>
+                    <text x="652" y="370" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#1a1d23" id="topo-ecm-intents">--</text>
+                    <text x="595" y="385" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">rate</text>
+                    <text x="652" y="385" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#2563eb" id="topo-ecm-rate">-- /s</text>
+
+                    <!-- Provisioning (bottom-left) -->
+                    <rect x="95" y="325" width="148" height="80" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5" opacity="0.9"/>
+                    <rect x="95" y="325" width="148" height="3" rx="1.5" fill="#7c3aed"/>
+                    <circle cx="116" cy="348" r="5" fill="#7c3aed" opacity="0.15"/>
+                    <circle cx="116" cy="348" r="5" fill="none" stroke="#7c3aed" stroke-width="1" opacity="0.5">
+                        <animate attributeName="r" values="5;8;5" dur="2.8s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="116" cy="348" r="3" fill="#7c3aed"/>
+                    <text x="128" y="351" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#1a1d23" letter-spacing="0.06em">PROVISION</text>
+                    <text x="113" y="370" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">intents</text>
+                    <text x="170" y="370" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#1a1d23" id="topo-gme-intents">--</text>
+                    <text x="113" y="385" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500" fill="#8b929a">rate</text>
+                    <text x="170" y="385" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#7c3aed" id="topo-gme-rate">-- /s</text>
+
+                    <!-- ── Flowing Particles ── -->
+                    <!-- Incident particles -->
+                    <circle r="3" fill="#dc2626" opacity="0.8" class="topo-particle">
+                        <animateMotion dur="3.5s" repeatCount="indefinite"><mpath href="#path-med"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#2563eb" opacity="0.5" class="topo-particle">
+                        <animateMotion dur="3.5s" begin="-1.7s" repeatCount="indefinite"><mpath href="#path-med"/></animateMotion>
+                    </circle>
+
+                    <!-- Financial particles -->
+                    <circle r="3" fill="#16a34a" opacity="0.8" class="topo-particle">
+                        <animateMotion dur="3s" repeatCount="indefinite"><mpath href="#path-fin"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#16a34a" opacity="0.5" class="topo-particle">
+                        <animateMotion dur="3s" begin="-1.5s" repeatCount="indefinite"><mpath href="#path-fin"/></animateMotion>
+                    </circle>
+
+                    <!-- Ecommerce particles -->
+                    <circle r="3" fill="#7c3aed" opacity="0.8" class="topo-particle">
+                        <animateMotion dur="2.8s" repeatCount="indefinite"><mpath href="#path-ecm"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#7c3aed" opacity="0.5" class="topo-particle">
+                        <animateMotion dur="2.8s" begin="-1.4s" repeatCount="indefinite"><mpath href="#path-ecm"/></animateMotion>
+                    </circle>
+
+                    <!-- Gaming particles -->
+                    <circle r="3" fill="#ea580c" opacity="0.8" class="topo-particle">
+                        <animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#path-gme"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#ea580c" opacity="0.5" class="topo-particle">
+                        <animateMotion dur="3.2s" begin="-1.6s" repeatCount="indefinite"><mpath href="#path-gme"/></animateMotion>
+                    </circle>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Story -->
+        <div class="story-section">
+            <div class="story-label">The Problem</div>
+            <h2>Your shell forgets why you did anything.</h2>
+            <p>
+                Run <code>history</code> on any machine. A flat list of commands, numbered sequentially, stripped of all context.
+                No record of what you were trying to accomplish. No link between the <code>grep</code> that found the bug
+                and the <code>git commit</code> that fixed it. Fifty years of Unix, and the best we have is an append-only text file.
+                <strong>Commands are captured. Intent is lost.</strong>
+            </p>
+
+            <div class="story-divider"></div>
+
+            <div class="story-label">The Hypothesis</div>
+            <h2>Systems that model intent outperform systems that model commands.</h2>
+            <p>
+                TALA reimagines shell history as a <strong>causality-aware, graph-structured narrative</strong> of intent.
+                Every action becomes a node in a directed acyclic graph &mdash; linked to what caused it, what it depended on,
+                what it produced, and how confident the system is in the outcome.
+                Intent becomes a first-class OS primitive: <code>I&nbsp;=&nbsp;f(C, X, P)</code>.
+            </p>
+
+            <div class="story-divider"></div>
+
+            <div class="story-label">Architecture</div>
+        </div>
+
+        <div class="landing-pillars">
+            <div class="pillar">
+                <div class="pillar-icon">talad</div>
+                <h3>Ingest &amp; Graph</h3>
+                <p>Intent extraction, embedding, graph construction, causal edge formation</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">weave</div>
+                <h3>Adaptive Replay</h3>
+                <p>Topological plan building, variable substitution, idempotent re-execution</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">kai</div>
+                <h3>Insight Engine</h3>
+                <p>Pattern detection, failure clustering, prediction, narrative summarization</p>
+            </div>
+        </div>
+
+        <div class="landing-enter-wrap">
+            <button class="landing-enter-btn" id="enter-btn" onclick="enterObservatory()">
+                Enter Observatory
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="8" x2="13" y2="8"/>
+                    <polyline points="9,4 13,8 9,12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="landing-footer">
+            Commands are ephemeral. Narratives are durable. Systems should understand both.
+        </div>
+
+    </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         DASHBOARD — Topology-first, node-based navigation
+         ═══════════════════════════════════════════════════ -->
+    <div class="dashboard" id="dashboard-container" style="display: none;">
+
+        <!-- Header -->
+        <div class="header">
+            <img src="logo.svg" alt="TALA" class="logo">
+            <div class="header-text">
+                <h1>TALA Intent Observatory</h1>
+                <p class="subtitle">Execution is transient. Intent endures.</p>
+            </div>
+            <div class="header-status">
+                <span class="status-dot" id="status-dot"></span>
+                <span class="status-text" id="status-text">Connecting...</span>
+            </div>
+        </div>
+
+        <!-- System Vitals Strip -->
+        <div class="vitals-strip">
+            <div class="vital">
+                <span class="vital-label">Intents</span>
+                <span class="vital-value" id="vital-intents">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">Success</span>
+                <span class="vital-value success" id="vital-success">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">Graph</span>
+                <span class="vital-value" id="vital-graph">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">HNSW</span>
+                <span class="vital-value" id="vital-hnsw">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">WAL</span>
+                <span class="vital-value" id="vital-wal">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">Ingest /s</span>
+                <span class="vital-value" id="vital-rate">&mdash;</span>
+            </div>
+            <div class="vital">
+                <span class="vital-label">Chaos</span>
+                <span class="vital-value warning" id="vital-chaos">&mdash;</span>
+            </div>
+        </div>
+
+        <!-- Living Topology — this IS the navigation -->
+        <div class="topology-viewport" id="topology-viewport" style="position:relative">
+            <!-- SVG injected by initDashboard() -->
+
+            <!-- Chaos Mode Indicator -->
+            <div class="chaos-indicator" id="chaos-indicator">
+                <div class="chaos-signal" id="chaos-signal"></div>
+                <span class="chaos-mode-label" id="chaos-mode-label">NOMINAL</span>
+                <span class="chaos-rate-label" id="chaos-rate-val"></span>
+                <span class="chaos-targets" id="chaos-targets"></span>
+            </div>
+        </div>
+
+        <!-- Detail Panel (drawer) -->
+        <div class="detail-panel" id="detail-panel">
+            <div class="detail-header" id="detail-header">
+                <div class="detail-status-dot" id="detail-dot"></div>
+                <div class="detail-title" id="detail-title">Node</div>
+                <div class="detail-type" id="detail-type">--</div>
+                <button class="detail-close" onclick="closePanel()">
+                    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="detail-body" id="detail-body">
+                <!-- Populated by JS per node -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Full dashboards: <a href="http://localhost:3000" target="_blank">Grafana</a> | <a href="http://localhost:9090" target="_blank">Prometheus</a></p>
+            <p class="mantra">Commands are ephemeral. Narratives are durable.</p>
+        </div>
+
+    </div><!-- /dashboard -->
+
+    <!-- ═══════════════════════════════════════════════════
+         ALL JAVASCRIPT
+         ═══════════════════════════════════════════════════ -->
+    <script>
+    // ════════════════════════════════════════════════════════
+    // TALA Intent Observatory — Topology-First Dashboard
+    // ════════════════════════════════════════════════════════
+
+    var API = '/api/v1/query';
+    var REFRESH = 3000;
+    var DIM = 384;
+    var HNSW_CAP = 100000;
+    var lastUpdate = 0;
+    var selectedNode = null;
+    var chaosLog = [];
+    var prevChaos = {};
+
+    // ── Prometheus helpers ──────────────────────────────────
+    async function pq(expr) {
+        try {
+            var r = await fetch(API + '?query=' + encodeURIComponent(expr));
+            if (!r.ok) return null;
+            var d = await r.json();
+            return d.status === 'success' ? d.data : null;
+        } catch(e) { return null; }
+    }
+    function sc(d) {
+        if (!d) return null;
+        if (d.resultType==='scalar'&&d.result) return parseFloat(d.result[1]);
+        if (d.resultType==='vector'&&d.result&&d.result.length>0) return parseFloat(d.result[0].value[1]);
+        return null;
+    }
+    function byL(d,l) {
+        if (!d||d.resultType!=='vector') return {};
+        var m={};
+        d.result.forEach(function(r){ if(r.metric[l]) m[r.metric[l]]=parseFloat(r.value[1]); });
+        return m;
+    }
+
+    // ── Formatters ─────────────────────────────────────────
+    function fmt(n){if(n==null||isNaN(n))return'\u2014';return Math.round(n).toLocaleString('en-US');}
+    function fmtF(n,d){if(n==null||isNaN(n))return'\u2014';return parseFloat(n).toFixed(d||1);}
+    function fmtP(n){if(n==null||isNaN(n))return'\u2014';return(parseFloat(n)*100).toFixed(1)+'%';}
+    function fmtNs(ns){
+        if(ns==null||isNaN(ns))return'\u2014';
+        if(ns<1e3)return fmtF(ns,0)+' ns';
+        if(ns<1e6)return fmtF(ns/1e3,1)+' \u00B5s';
+        if(ns<1e9)return fmtF(ns/1e6,2)+' ms';
+        return fmtF(ns/1e9,2)+' s';
+    }
+    function fmtB(b){
+        if(b==null||isNaN(b))return'\u2014';
+        if(b<1024)return b+' B';if(b<1048576)return fmtF(b/1024,1)+' KB';
+        if(b<1073741824)return fmtF(b/1048576,1)+' MB';return fmtF(b/1073741824,2)+' GB';
+    }
+    function fmtK(n){if(n==null||isNaN(n))return'--';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return Math.round(n).toLocaleString('en-US');}
+    function timeSince(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<5)return'just now';if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';return Math.floor(s/3600)+'h ago';}
+
+    // ── Build Topology SVG ─────────────────────────────────
+    function buildTopologySVG() {
+        return '<svg class="dash-topology" viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs>' +
+        '<linearGradient id="eg-med" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity="0.12"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0.4"/></linearGradient>' +
+        '<linearGradient id="eg-fin" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16a34a" stop-opacity="0.12"/><stop offset="100%" stop-color="#16a34a" stop-opacity="0.4"/></linearGradient>' +
+        '<linearGradient id="eg-ecm" x1="1" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#7c3aed" stop-opacity="0.12"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0.4"/></linearGradient>' +
+        '<linearGradient id="eg-gme" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ea580c" stop-opacity="0.12"/><stop offset="100%" stop-color="#ea580c" stop-opacity="0.4"/></linearGradient>' +
+        '</defs>' +
+
+        // Edges (vertical → center)
+        '<path id="ep-med" d="M 210,140 C 310,180 420,250 510,295" stroke="url(#eg-med)" stroke-width="2" fill="none" class="topo-edge"/>' +
+        '<path id="ep-fin" d="M 890,140 C 790,180 680,250 590,295" stroke="url(#eg-fin)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-0.5s"/>' +
+        '<path id="ep-ecm" d="M 890,480 C 790,440 680,370 590,325" stroke="url(#eg-ecm)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-1s"/>' +
+        '<path id="ep-gme" d="M 210,480 C 310,440 420,370 510,325" stroke="url(#eg-gme)" stroke-width="2" fill="none" class="topo-edge" style="animation-delay:-1.5s"/>' +
+
+        // Subsystem connectors
+        '<line x1="505" y1="280" x2="400" y2="210" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 5"/>' +
+        '<line x1="595" y1="280" x2="700" y2="210" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 5"/>' +
+        '<line x1="505" y1="340" x2="400" y2="410" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 5"/>' +
+        '<line x1="595" y1="340" x2="700" y2="410" stroke="#d8dce3" stroke-width="1" stroke-dasharray="3 5"/>' +
+
+        // ── Center: Narrative Layer ──
+        '<g class="topo-hub" onclick="selectNode(\'hub\')">' +
+        '<circle cx="550" cy="310" r="58" fill="none" stroke="#e8ecf1" stroke-width="1" stroke-dasharray="3 6" style="transform-origin:550px 310px;animation:centerSpin 60s linear infinite"/>' +
+        '<circle cx="550" cy="310" r="46" fill="#fff" stroke="#d8dce3" stroke-width="1.5" class="node-border"/>' +
+        '<circle cx="550" cy="310" r="52" fill="none" stroke="#2563eb" stroke-width="6" opacity="0" class="node-glow" style="transition:opacity 0.3s"/>' +
+        '<circle cx="550" cy="310" r="40" fill="none" stroke="#2563eb" stroke-width="0.5" opacity="0.25"/>' +
+        // mini orbital nodes (echoing logo)
+        '<circle cx="590" cy="310" r="3" fill="#2563eb" opacity="0.55"/>' +
+        '<circle cx="570" cy="275" r="3" fill="#1a1d23" opacity="0.35"/>' +
+        '<circle cx="530" cy="275" r="3" fill="#2563eb" opacity="0.55"/>' +
+        '<circle cx="510" cy="310" r="3" fill="#1a1d23" opacity="0.35"/>' +
+        '<circle cx="530" cy="345" r="3" fill="#2563eb" opacity="0.55"/>' +
+        '<circle cx="570" cy="345" r="3" fill="#1a1d23" opacity="0.35"/>' +
+        '<text x="550" y="303" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#1a1d23" letter-spacing="0.1em">TALA</text>' +
+        '<text x="550" y="316" text-anchor="middle" font-family="Inter,sans-serif" font-size="6.5" font-weight="500" fill="#8b929a" letter-spacing="0.06em">NARRATIVE LAYER</text>' +
+        '<text x="550" y="330" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" font-weight="600" fill="#2563eb" id="dt-hub-edges">-- edges</text>' +
+        '</g>' +
+
+        // ── Subsystem Nodes ──
+        buildSubNode(400, 200, 'pipeline', 'PIPE', '#2563eb', 'dt-pipe') +
+        buildSubNode(700, 200, 'hnsw', 'HNSW', '#7c3aed', 'dt-hnsw') +
+        buildSubNode(400, 420, 'wal', 'WAL', '#16a34a', 'dt-wal') +
+        buildSubNode(700, 420, 'graph', 'GRAPH', '#ea580c', 'dt-graph') +
+
+        // ── Domain Narrative Nodes ──
+        buildVertNode(55, 70, 'incident', 'INCIDENT RESPONSE', '#dc2626', 3) +
+        buildVertNode(745, 70, 'deploy', 'CONTINUOUS DEPLOY', '#16a34a', 2.5) +
+        buildVertNode(745, 420, 'observe', 'OBSERVABILITY', '#2563eb', 3.2) +
+        buildVertNode(55, 420, 'provision', 'PROVISIONING', '#7c3aed', 2.8) +
+
+        // ── Particles ──
+        buildParticles('ep-med', '#2563eb', 3.5) +
+        buildParticles('ep-fin', '#16a34a', 3.0) +
+        buildParticles('ep-ecm', '#7c3aed', 2.8) +
+        buildParticles('ep-gme', '#ea580c', 3.2) +
+
+        '</svg>';
+    }
+
+    // Capability descriptions for subsystem nodes
+    var CAPABILITIES = {
+        pipeline: {verb:'EXTRACT', desc:'command \u2192 intent'},
+        hnsw:     {verb:'REMEMBER', desc:'semantic index'},
+        wal:      {verb:'PERSIST', desc:'durable log'},
+        graph:    {verb:'CONNECT', desc:'causal edges'},
+    };
+
+    function buildSubNode(cx, cy, id, label, color, valId) {
+        var cap = CAPABILITIES[id] || {verb:label, desc:''};
+        return '<g class="topo-subsystem" onclick="selectNode(\'' + id + '\')" data-node="' + id + '">' +
+            '<circle cx="'+cx+'" cy="'+cy+'" r="24" fill="#fafbfc" stroke="#d8dce3" stroke-width="1"/>' +
+            '<circle cx="'+cx+'" cy="'+cy+'" r="28" fill="none" stroke="'+color+'" stroke-width="5" opacity="0" class="node-glow" style="transition:opacity 0.3s"/>' +
+            '<text x="'+cx+'" y="'+(cy-5)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" font-weight="700" fill="'+color+'" letter-spacing="0.06em">'+cap.verb+'</text>' +
+            '<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" font-weight="500" fill="#8b929a">'+cap.desc+'</text>' +
+            '<text x="'+cx+'" y="'+(cy+15)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" font-weight="700" fill="'+color+'" id="'+valId+'">--</text>' +
+            '</g>';
+    }
+
+    // Narrative context labels per vertical
+    var NARRATIVES = {
+        incident:  {context:'Diagnostic Journey', example:'alert \u2192 triage \u2192 root cause \u2192 fix \u2192 verify'},
+        deploy:    {context:'Release Lifecycle', example:'build \u2192 test \u2192 stage \u2192 canary \u2192 rollout'},
+        observe:   {context:'Investigation Path', example:'anomaly \u2192 trace \u2192 diagnose \u2192 tune \u2192 confirm'},
+        provision: {context:'System Setup', example:'install \u2192 configure \u2192 harden \u2192 test \u2192 activate'},
+    };
+
+    function buildVertNode(x, y, id, label, color, pulseDur) {
+        var w = 200, h = 130;
+        var narr = NARRATIVES[id] || {context:'Operations', example:''};
+        return '<g class="topo-node" onclick="selectNode(\'' + id + '\')" data-node="' + id + '">' +
+            '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="#fff" stroke="'+color+'" stroke-width="1.5" opacity="0.95" class="node-bg node-border"/>' +
+            '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="3" rx="1.5" fill="'+color+'"/>' +
+            '<rect x="'+(x-3)+'" y="'+(y-3)+'" width="'+(w+6)+'" height="'+(h+6)+'" rx="14" fill="none" stroke="'+color+'" stroke-width="4" opacity="0" class="node-glow" style="transition:opacity 0.3s"/>' +
+            // status dot + name
+            '<circle cx="'+(x+18)+'" cy="'+(y+24)+'" r="5" fill="'+color+'" opacity="0.12"/>' +
+            '<circle cx="'+(x+18)+'" cy="'+(y+24)+'" r="5" fill="none" stroke="'+color+'" stroke-width="1" opacity="0.4">' +
+            '<animate attributeName="r" values="5;9;5" dur="'+pulseDur+'s" repeatCount="indefinite"/>' +
+            '<animate attributeName="opacity" values="0.4;0;0.4" dur="'+pulseDur+'s" repeatCount="indefinite"/>' +
+            '</circle>' +
+            '<circle cx="'+(x+18)+'" cy="'+(y+24)+'" r="3.5" fill="'+color+'"/>' +
+            '<text x="'+(x+32)+'" y="'+(y+28)+'" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1a1d23" letter-spacing="0.06em">'+label+'</text>' +
+            // narrative context
+            '<text x="'+(x+16)+'" y="'+(y+46)+'" font-family="Inter,sans-serif" font-size="7" font-weight="600" fill="'+color+'" letter-spacing="0.04em">'+narr.context.toUpperCase()+'</text>' +
+            '<text x="'+(x+16)+'" y="'+(y+57)+'" font-family="JetBrains Mono,monospace" font-size="6.5" font-weight="400" fill="#8b929a">'+narr.example+'</text>' +
+            // separator
+            '<line x1="'+(x+16)+'" y1="'+(y+64)+'" x2="'+(x+w-16)+'" y2="'+(y+64)+'" stroke="#e8ecf1" stroke-width="0.5"/>' +
+            // metrics row 1: intents captured + narratives active
+            '<text x="'+(x+16)+'" y="'+(y+79)+'" font-family="Inter,sans-serif" font-size="6.5" font-weight="500" fill="#8b929a">intents captured</text>' +
+            '<text x="'+(x+w-16)+'" y="'+(y+79)+'" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#1a1d23" id="dn-'+id+'-intents">--</text>' +
+            // metrics row 2: ingest rate
+            '<text x="'+(x+16)+'" y="'+(y+93)+'" font-family="Inter,sans-serif" font-size="6.5" font-weight="500" fill="#8b929a">ingest rate</text>' +
+            '<text x="'+(x+w-16)+'" y="'+(y+93)+'" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="'+color+'" id="dn-'+id+'-rate">-- /s</text>' +
+            // metrics row 3: patterns detected
+            '<text x="'+(x+16)+'" y="'+(y+107)+'" font-family="Inter,sans-serif" font-size="6.5" font-weight="500" fill="#8b929a">patterns found</text>' +
+            '<text x="'+(x+w-16)+'" y="'+(y+107)+'" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#16a34a" id="dn-'+id+'-patterns">--</text>' +
+            // metrics row 4: success rate
+            '<text x="'+(x+16)+'" y="'+(y+121)+'" font-family="Inter,sans-serif" font-size="6.5" font-weight="500" fill="#8b929a">outcome success</text>' +
+            '<text x="'+(x+w-16)+'" y="'+(y+121)+'" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#16a34a" id="dn-'+id+'-success">--%</text>' +
+            '</g>';
+    }
+
+    function buildParticles(pathId, color, dur) {
+        return '<circle r="3.5" fill="'+color+'" opacity="0.8" class="topo-particle"><animateMotion dur="'+dur+'s" repeatCount="indefinite"><mpath href="#'+pathId+'"/></animateMotion></circle>' +
+            '<circle r="2" fill="'+color+'" opacity="0.45" class="topo-particle"><animateMotion dur="'+dur+'s" begin="-'+(dur/2).toFixed(1)+'s" repeatCount="indefinite"><mpath href="#'+pathId+'"/></animateMotion></circle>';
+    }
+
+    // ── Topology Data Update ───────────────────────────────
+    async function updateTopologyData() {
+        var r = await Promise.all([
+            pq('tala_intents_ingested_total'), pq('rate(tala_intents_ingested_total[1m])'),
+            pq('tala_intents_success_total'), pq('tala_hnsw_index_size'),
+            pq('tala_store_wal_append_count'), pq('tala_graph_node_count'),
+            pq('sum(rate(tala_store_wal_append_count[1m]))'),
+            pq('sum(tala_intents_ingested_total)'), pq('sum(tala_intents_success_total) / sum(tala_intents_ingested_total)'),
+            pq('tala_graph_edge_count'), pq('sum(rate(tala_intents_ingested_total[1m]))'),
+            pq('sum(tala_chaos_events_total)'),
+            pq('tala_active_patterns'), pq('tala_active_clusters'),
+        ]);
+        var intents=byL(r[0],'vertical'), rates=byL(r[1],'vertical'), success=byL(r[2],'vertical');
+        var hnswSize=sc(r[3]), walCount=sc(r[4]), graphNodes=sc(r[5]), pipeRate=sc(r[6]);
+        var totalIntents=sc(r[7]), successRate=sc(r[8]), graphEdges=sc(r[9]);
+        var aggRate=sc(r[10]), chaosTotal=sc(r[11]);
+        var patterns=byL(r[12],'vertical'), clusters=byL(r[13],'vertical');
+
+        function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+        // Domain narrative nodes
+        ['incident','deploy','observe','provision'].forEach(function(v){
+            st('dn-'+v+'-intents', fmtK(intents[v]));
+            st('dn-'+v+'-rate', (rates[v]!=null?parseFloat(rates[v]).toFixed(1):'--')+' /s');
+            var sr = (intents[v]&&success[v]) ? (success[v]/intents[v]) : null;
+            st('dn-'+v+'-success', sr!=null?(sr*100).toFixed(1)+'%':'--');
+            st('dn-'+v+'-patterns', fmt(patterns[v]||0));
+        });
+
+        // Capability nodes
+        st('dt-pipe', pipeRate!=null?parseFloat(pipeRate).toFixed(1)+'/s':'--');
+        st('dt-hnsw', fmtK(hnswSize));
+        st('dt-wal', fmtK(walCount));
+        st('dt-graph', fmtK(graphNodes));
+        st('dt-hub-edges', fmt(graphEdges)+' edges');
+
+        // Vitals strip
+        st('vital-intents', fmt(totalIntents));
+        var vsEl = document.getElementById('vital-success');
+        if(vsEl&&successRate!=null){vsEl.textContent=fmtP(successRate);vsEl.className='vital-value '+(successRate>=0.95?'success':successRate<0.8?'failure':'warning');}
+        st('vital-graph', fmt(graphNodes));
+        st('vital-hnsw', fmt(hnswSize));
+        st('vital-wal', fmt(walCount));
+        st('vital-rate', fmtF(aggRate,1));
+        st('vital-chaos', fmt(chaosTotal));
+
+        // Store for detail panel use
+        window._topoData = {
+            intents:intents, rates:rates, success:success,
+            hnswSize:hnswSize, walCount:walCount, graphNodes:graphNodes, graphEdges:graphEdges,
+            pipeRate:pipeRate, totalIntents:totalIntents, successRate:successRate,
+            aggRate:aggRate, chaosTotal:chaosTotal
+        };
+
+        // Update detail panel if open
+        if(selectedNode) refreshDetail(selectedNode);
+
+        // Chaos mode detection
+        await updateChaosMode();
+    }
+
+    // ── Chaos Mode Detection ───────────────────────────────
+    var prevChaosSnap = {};
+
+    async function updateChaosMode() {
+        var r = await Promise.all([
+            pq('rate(tala_chaos_failures_injected[30s])'),
+            pq('rate(tala_chaos_latency_spikes[30s])'),
+            pq('rate(tala_chaos_retries_injected[30s])'),
+            pq('sum(rate(tala_chaos_events_total[30s]))'),
+            pq('rate(tala_chaos_events_total[30s])'),
+        ]);
+
+        var failRate = sc(r[0]) || 0;
+        var latRate  = sc(r[1]) || 0;
+        var retryRate= sc(r[2]) || 0;
+        var totalRate= sc(r[3]) || 0;
+        var perVerticalChaosRate = byL(r[4], 'vertical');
+
+        var indicator = document.getElementById('chaos-indicator');
+        var signal    = document.getElementById('chaos-signal');
+        var modeLabel = document.getElementById('chaos-mode-label');
+        var rateVal   = document.getElementById('chaos-rate-val');
+        var targets   = document.getElementById('chaos-targets');
+        var viewport  = document.getElementById('topology-viewport');
+
+        if (!indicator) return;
+
+        // Determine chaos mode
+        var mode = 'nominal';
+        var modeText = 'NOMINAL';
+        var modeColor = '#16a34a';
+        var evtPerMin = totalRate * 60;
+
+        if (totalRate > 0) {
+            // Identify dominant type
+            var maxType = 'failure', maxRate = failRate;
+            if (latRate > maxRate) { maxType = 'latency'; maxRate = latRate; }
+            if (retryRate > maxRate) { maxType = 'retry'; maxRate = retryRate; }
+
+            // Count active types
+            var activeTypes = 0;
+            if (failRate > 0) activeTypes++;
+            if (latRate > 0) activeTypes++;
+            if (retryRate > 0) activeTypes++;
+
+            // Stampede: high aggregate rate or all types active simultaneously
+            if (evtPerMin > 30 || (activeTypes >= 3 && evtPerMin > 10)) {
+                mode = 'stampede';
+                modeText = 'STAMPEDE';
+                modeColor = '#dc2626';
+            } else if (activeTypes >= 2) {
+                mode = 'mixed';
+                modeText = 'MIXED CHAOS';
+                modeColor = '#c2410c';
+            } else if (maxType === 'failure') {
+                mode = 'failure';
+                modeText = 'FAILURE INJECTION';
+                modeColor = '#dc2626';
+            } else if (maxType === 'latency') {
+                mode = 'latency';
+                modeText = 'LATENCY STORM';
+                modeColor = '#ca8a04';
+            } else if (maxType === 'retry') {
+                mode = 'retry';
+                modeText = 'RETRY CASCADE';
+                modeColor = '#2563eb';
+            }
+        }
+
+        // Identify affected verticals
+        var affectedVerts = [];
+        ['incident','deploy','observe','provision'].forEach(function(v) {
+            if (perVerticalChaosRate[v] && perVerticalChaosRate[v] > 0) {
+                affectedVerts.push(v.charAt(0).toUpperCase() + v.slice(1));
+            }
+        });
+
+        // Update indicator
+        if (mode === 'nominal') {
+            indicator.className = 'chaos-indicator';
+            viewport.classList.remove('chaos-stampede');
+        } else {
+            indicator.className = 'chaos-indicator active mode-' + mode;
+            signal.style.background = modeColor;
+            signal.style.color = modeColor;
+            modeLabel.textContent = modeText;
+            modeLabel.style.color = modeColor;
+            rateVal.textContent = fmtF(evtPerMin, 1) + ' evt/min';
+            targets.textContent = affectedVerts.length > 0 ? affectedVerts.join(' \u00B7 ') : '';
+
+            // Stampede viewport effect
+            if (mode === 'stampede') {
+                viewport.classList.add('chaos-stampede');
+            } else {
+                viewport.classList.remove('chaos-stampede');
+            }
+        }
+
+        // Per-edge disruption: add/remove visual disruption on affected edges
+        var edgeMap = {incident:'ep-med', deploy:'ep-fin', observe:'ep-ecm', provision:'ep-gme'};
+        ['incident','deploy','observe','provision'].forEach(function(v) {
+            var edgePath = document.getElementById(edgeMap[v]);
+            if (!edgePath) return;
+            if (perVerticalChaosRate[v] && perVerticalChaosRate[v] > 0) {
+                edgePath.classList.add('edge-disrupted');
+                // Also flash the node's chaos ring
+                var nodeGroup = document.querySelector('[data-node="'+v+'"]');
+                if (nodeGroup && !nodeGroup.querySelector('.chaos-ring-el')) {
+                    var rect = nodeGroup.querySelector('.node-bg');
+                    if (rect) {
+                        var x = parseFloat(rect.getAttribute('x'));
+                        var y = parseFloat(rect.getAttribute('y'));
+                        var w = parseFloat(rect.getAttribute('width'));
+                        var h = parseFloat(rect.getAttribute('height'));
+                        var ring = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                        ring.setAttribute('x', x - 2);
+                        ring.setAttribute('y', y - 2);
+                        ring.setAttribute('width', w + 4);
+                        ring.setAttribute('height', h + 4);
+                        ring.setAttribute('rx', '13');
+                        ring.setAttribute('fill', 'none');
+                        ring.setAttribute('stroke', modeColor);
+                        ring.setAttribute('stroke-width', '2');
+                        ring.setAttribute('class', 'chaos-ring-el node-chaos-ring');
+                        nodeGroup.appendChild(ring);
+                    }
+                }
+            } else {
+                edgePath.classList.remove('edge-disrupted');
+                var nodeGroup = document.querySelector('[data-node="'+v+'"]');
+                if (nodeGroup) {
+                    var rings = nodeGroup.querySelectorAll('.chaos-ring-el');
+                    rings.forEach(function(r) { r.remove(); });
+                }
+            }
+        });
+    }
+
+    // ── Node Selection ─────────────────────────────────────
+    function selectNode(nodeId) {
+        // Deselect previous
+        document.querySelectorAll('.topo-node.selected,.topo-subsystem.selected,.topo-hub.selected').forEach(function(el){el.classList.remove('selected');});
+        selectedNode = nodeId;
+
+        // Select new
+        var el = document.querySelector('[data-node="'+nodeId+'"]') || document.querySelector('.topo-hub');
+        if(el) el.classList.add('selected');
+
+        // Open panel
+        var panel = document.getElementById('detail-panel');
+        var viewport = document.getElementById('topology-viewport');
+        panel.classList.add('open');
+        viewport.classList.add('panel-open');
+
+        refreshDetail(nodeId);
+    }
+
+    function closePanel() {
+        selectedNode = null;
+        document.querySelectorAll('.topo-node.selected,.topo-subsystem.selected,.topo-hub.selected').forEach(function(el){el.classList.remove('selected');});
+        document.getElementById('detail-panel').classList.remove('open');
+        document.getElementById('topology-viewport').classList.remove('panel-open');
+    }
+
+    // ── Detail Panel Rendering ─────────────────────────────
+    var NODE_META = {
+        hub:       {title:'Narrative Layer',       type:'SYSTEM CORE', color:'#2563eb'},
+        incident:  {title:'Incident Response',       type:'DOMAIN',      color:'#dc2626', narrative:'When something breaks at 2am, every diagnostic step becomes a connected narrative. Next time the same symptom appears, TALA recalls the entire resolution path.'},
+        deploy:    {title:'Continuous Deployment',  type:'DOMAIN',      color:'#16a34a', narrative:'The full release lifecycle \u2014 build, test, canary, rollout \u2014 captured as a replayable intent sequence. If canary fails, replay the last successful deploy adapted to current state.'},
+        observe:   {title:'Observability',          type:'DOMAIN',      color:'#2563eb', narrative:'Diagnostic investigations become queryable institutional knowledge. The path from anomaly to resolution is a durable narrative, not tribal knowledge locked in someone\u2019s history file.'},
+        provision: {title:'System Provisioning',    type:'DOMAIN',      color:'#7c3aed', narrative:'Machine setup as a replayable narrative: packages, configs, certs, kernel tuning. New machine? Replay the provisioning narrative with context adaptation.'},
+        pipeline:  {title:'Intent Extraction',     type:'CAPABILITY',  color:'#2563eb'},
+        hnsw:      {title:'Semantic Memory',       type:'CAPABILITY',  color:'#7c3aed'},
+        wal:       {title:'Durable Persistence',   type:'CAPABILITY',  color:'#16a34a'},
+        graph:     {title:'Causal Reasoning',      type:'CAPABILITY',  color:'#ea580c'},
+    };
+
+    async function refreshDetail(nodeId) {
+        var meta = NODE_META[nodeId]; if(!meta) return;
+
+        // Header
+        document.getElementById('detail-title').textContent = meta.title;
+        document.getElementById('detail-type').textContent = meta.type;
+        var dot = document.getElementById('detail-dot');
+        dot.style.background = meta.color; dot.style.color = meta.color;
+        document.getElementById('detail-header').style.setProperty('--accent-color', meta.color);
+        document.querySelector('.detail-header').style.borderColor = meta.color + '20';
+        document.querySelector('.detail-header::before') || (function(){
+            var hdr = document.querySelector('.detail-header');
+            hdr.style.borderTop = '3px solid ' + meta.color;
+        })();
+
+        var body = document.getElementById('detail-body');
+
+        switch(nodeId) {
+            case 'hub':       body.innerHTML = await buildHubDetail(); break;
+            case 'pipeline':  body.innerHTML = await buildPipelineDetail(); break;
+            case 'hnsw':      body.innerHTML = await buildHnswDetail(); break;
+            case 'wal':       body.innerHTML = await buildStorageDetail(); break;
+            case 'graph':     body.innerHTML = await buildGraphDetail(); break;
+            default:          body.innerHTML = await buildVerticalDetail(nodeId); break;
+        }
+    }
+
+    function sectionTitle(text, color) {
+        return '<div class="detail-section-title" style="--c:'+(color||'#93b4f6')+'"><span style="background:var(--c)"></span>' + text + '</div>';
+    }
+
+    // ── NARRATIVE LAYER (Hub) Detail ─────────────────────
+    async function buildHubDetail() {
+        var r = await Promise.all([
+            pq('sum(tala_intents_ingested_total)'), pq('sum(tala_intents_success_total)'),
+            pq('sum(tala_intents_failed_total)'), pq('sum(tala_intents_partial_total)'),
+            pq('sum(rate(tala_intents_ingested_total[1m]))'), pq('sum(tala_chaos_events_total)'),
+            pq('sum(tala_graph_node_count)'), pq('sum(tala_graph_edge_count)'),
+            pq('sum(tala_active_patterns)'), pq('sum(tala_active_clusters)'),
+            pq('sum(tala_replays_total)'), pq('sum(tala_insights_total)'),
+        ]);
+        var total=sc(r[0]),succ=sc(r[1]),fail=sc(r[2]),part=sc(r[3]),rate=sc(r[4]),chaos=sc(r[5]);
+        var gNodes=sc(r[6]),gEdges=sc(r[7]),patterns=sc(r[8]),clusters=sc(r[9]);
+        var replays=sc(r[10]),insights=sc(r[11]);
+        var sr=total>0?(succ||0)/total:null, fr=total>0?(fail||0)/total:null, pr=total>0?(part||0)/total:null;
+        if(fail==null&&part==null&&succ!=null&&total>0){sr=succ/total;fr=1-sr;pr=0;}
+        var sw=sr?sr*100:0, fw=fr?fr*100:0, pw=pr?pr*100:0;
+        var avgDeg=gNodes>0&&gEdges!=null?gEdges/gNodes:null;
+
+        return '<div class="detail-section">' +
+            '<p style="font-size:0.72rem;color:#5c6370;line-height:1.6;margin-bottom:0.75rem">The narrative layer transforms raw commands into structured, causally-connected intent graphs across all operational domains.</p>' +
+            '<div class="hero-metric"><div class="hero-metric-value">'+fmt(total)+'</div><div class="hero-metric-label">Total Intents Structured</div></div>' +
+            '<div class="rate-bar-container"><div class="rate-bar-seg success" style="width:'+sw+'%"></div><div class="rate-bar-seg failure" style="width:'+fw+'%"></div><div class="rate-bar-seg partial" style="width:'+pw+'%"></div></div>' +
+            '<div class="rate-bar-legend">' +
+            '<span class="rate-legend-item"><span class="rate-legend-dot" style="background:var(--success)"></span>Success '+fmtP(sr)+'</span>' +
+            '<span class="rate-legend-item"><span class="rate-legend-dot" style="background:var(--failure)"></span>Failure '+fmtP(fr)+'</span>' +
+            '<span class="rate-legend-item"><span class="rate-legend-dot" style="background:var(--partial)"></span>Partial '+fmtP(pr)+'</span>' +
+            '</div></div>' +
+
+            '<div class="detail-section">'+sectionTitle('Graph Intelligence','#2563eb')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Intent Nodes</div><div class="metric-value">'+fmt(gNodes)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Causal Edges</div><div class="metric-value">'+fmt(gEdges)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Connectivity</div><div class="metric-value">'+fmtF(avgDeg,1)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Ingest Rate</div><div class="metric-value">'+fmtF(rate,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '</div></div>' +
+
+            '<div class="detail-section">'+sectionTitle('What TALA Learned','#16a34a')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Patterns Found</div><div class="metric-value">'+fmt(patterns||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Intent Clusters</div><div class="metric-value">'+fmt(clusters||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Replays Generated</div><div class="metric-value">'+fmt(replays||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Insights Produced</div><div class="metric-value">'+fmt(insights||0)+'</div></div>' +
+            '</div></div>' +
+
+            '<div class="detail-section">'+sectionTitle('System Health','#ca8a04')+ await buildLocksSummary() +'</div>';
+    }
+
+    async function buildLocksSummary() {
+        var locks=['intents','hnsw','index_map','wal','hot'];
+        var qs=[];
+        locks.forEach(function(l){
+            qs.push(pq('tala_lock_acquisitions_total{lock="'+l+'"}'));
+            qs.push(pq('tala_lock_contentions_total{lock="'+l+'"}'));
+        });
+        var r=await Promise.all(qs);
+        var html='';
+        locks.forEach(function(l,i){
+            var acq=sc(r[i*2]),cont=sc(r[i*2+1]);
+            var rate=acq>0?(cont||0)/acq:0;
+            var cls=rate>0.05?'red':rate>0.01?'yellow':'green';
+            html+='<div class="contention-row"><span class="contention-dot '+cls+'"></span><span class="contention-name">'+l+'</span><span class="contention-val">'+fmtP(rate)+'</span></div>';
+        });
+        return html;
+    }
+
+    // ── DOMAIN NARRATIVE Detail ───────────────────────────
+    async function buildVerticalDetail(v) {
+        var r = await Promise.all([
+            pq('tala_intents_ingested_total{vertical="'+v+'"}'),
+            pq('tala_intents_success_total{vertical="'+v+'"}'),
+            pq('tala_intents_failure_total{vertical="'+v+'"}'),
+            pq('rate(tala_intents_ingested_total{vertical="'+v+'"}[1m])'),
+            pq('tala_chaos_events_total{vertical="'+v+'"}'),
+            pq('tala_active_patterns{vertical="'+v+'"}'),
+            pq('tala_active_clusters{vertical="'+v+'"}'),
+            pq('tala_replays_total{vertical="'+v+'"}'),
+            pq('tala_insights_total{vertical="'+v+'"}'),
+            pq('tala_graph_node_count{vertical="'+v+'"}'),
+            pq('tala_graph_edge_count{vertical="'+v+'"}'),
+        ]);
+        var intents=sc(r[0]),success=sc(r[1]),failures=sc(r[2]),rate=sc(r[3]);
+        var chaos=sc(r[4]),patterns=sc(r[5]),clusters=sc(r[6]);
+        var replays=sc(r[7]),insights=sc(r[8]);
+        var gNodes=sc(r[9]),gEdges=sc(r[10]);
+        var sr=intents>0&&success!=null?success/intents:null;
+        var avgDeg=gNodes>0&&gEdges!=null?gEdges/gNodes:null;
+        var meta = NODE_META[v];
+
+        return '<div class="detail-section">' +
+            '<p style="font-size:0.72rem;color:#5c6370;line-height:1.6;margin-bottom:0.75rem">'+(meta.narrative||'')+'</p>' +
+            '<div class="hero-metric"><div class="hero-metric-value">'+fmt(intents)+'</div><div class="hero-metric-label">Intents Captured</div></div>' +
+            '</div>' +
+
+            // What TALA sees — the narrative structure
+            '<div class="detail-section">'+sectionTitle('Narrative Structure', meta.color)+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Graph Nodes</div><div class="metric-value">'+fmt(gNodes)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Causal Edges</div><div class="metric-value">'+fmt(gEdges)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Connectivity</div><div class="metric-value">'+fmtF(avgDeg,1)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Ingest Rate</div><div class="metric-value">'+fmtF(rate,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '</div></div>' +
+
+            // What TALA learned
+            '<div class="detail-section">'+sectionTitle('What TALA Learned', meta.color)+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Patterns Detected</div><div class="metric-value">'+fmt(patterns||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Intent Clusters</div><div class="metric-value">'+fmt(clusters||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Replays Generated</div><div class="metric-value">'+fmt(replays||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Insights Produced</div><div class="metric-value">'+fmt(insights||0)+'</div></div>' +
+            '</div></div>' +
+
+            // Outcomes
+            '<div class="detail-section">'+sectionTitle('Outcome Distribution', meta.color)+
+            '<div class="metric-grid cols-3">' +
+            '<div class="metric-card"><div class="metric-label">Success</div><div class="metric-value success">'+fmtP(sr)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Failures</div><div class="metric-value failure">'+fmt(failures||0)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Chaos Events</div><div class="metric-value warning">'+fmt(chaos||0)+'</div></div>' +
+            '</div></div>';
+    }
+
+    // ── PIPELINE Detail ────────────────────────────────────
+    async function buildPipelineDetail() {
+        var stages=[
+            {key:'extract',name:'EXTRACT',ns:'tala_daemon_extract_ns_total',cnt:'tala_daemon_extract_count',color:'var(--stage-extract)'},
+            {key:'wal',name:'WAL',ns:'tala_store_wal_append_ns_total',cnt:'tala_store_wal_append_count',color:'var(--stage-wal)'},
+            {key:'hnsw',name:'HNSW',ns:'tala_store_hnsw_insert_ns_total',cnt:'tala_store_hnsw_insert_count',color:'var(--stage-hnsw)'},
+            {key:'edges',name:'EDGES',ns:'tala_store_edge_search_ns_total',cnt:'tala_store_edge_search_count',color:'var(--stage-edges)'},
+            {key:'hot',name:'HOT',ns:'tala_store_hot_push_ns_total',cnt:'tala_store_hot_push_count',color:'var(--stage-hot)'},
+        ];
+        var qs=[];
+        stages.forEach(function(s){qs.push(pq(s.ns));qs.push(pq(s.cnt));});
+        qs.push(pq('tala_store_segment_flush_count'));
+        qs.push(pq('sum(rate(tala_store_wal_append_count[1m]))'));
+        var r=await Promise.all(qs);
+        var avgs={}, maxAvg=0;
+        stages.forEach(function(s,i){
+            var ns=sc(r[i*2]),cnt=sc(r[i*2+1]);
+            var avg=(ns!=null&&cnt>0)?ns/cnt:null;
+            avgs[s.key]={avg:avg,count:cnt};
+            if(avg!=null&&avg>maxAvg) maxAvg=avg;
+        });
+        var wf='';
+        stages.forEach(function(s){
+            var a=avgs[s.key];
+            var pct=maxAvg>0&&a.avg!=null?(a.avg/maxAvg)*100:0;
+            wf+='<div class="waterfall-stage"><span class="waterfall-name">'+s.name+'</span><div class="waterfall-track"><div class="waterfall-fill" style="width:'+pct+'%;background:'+s.color+'"></div></div><span class="waterfall-val">'+fmtNs(a.avg)+'</span></div>';
+        });
+        var flushes=sc(r[stages.length*2]), throughput=sc(r[stages.length*2+1]);
+        return '<div class="detail-section">'+sectionTitle('Stage Waterfall','#2563eb')+wf+'</div>' +
+            '<div class="detail-section">'+sectionTitle('Statistics','#2563eb')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Segment Flushes</div><div class="metric-value">'+fmt(flushes)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Throughput</div><div class="metric-value">'+fmtF(throughput,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '</div></div>' +
+            '<div class="detail-section">'+sectionTitle('Per-Stage Ops','#8b929a')+
+            '<div class="metric-grid">' +
+            stages.map(function(s){return '<div class="metric-card"><div class="metric-label">'+s.name+' Ops</div><div class="metric-value">'+fmt(avgs[s.key].count)+'</div></div>';}).join('') +
+            '</div></div>';
+    }
+
+    // ── HNSW Detail ────────────────────────────────────────
+    async function buildHnswDetail() {
+        var r=await Promise.all([
+            pq('tala_hnsw_index_size'), pq('tala_store_hnsw_insert_count'),
+            pq('rate(tala_store_hnsw_insert_count[1m])'), pq('tala_store_hnsw_search_count'),
+            pq('rate(tala_store_hnsw_search_count[1m])'), pq('tala_store_hnsw_search_ns_total'),
+            pq('tala_store_hnsw_search_visited_total'), pq('tala_store_hnsw_insert_ns_total'),
+        ]);
+        var sz=sc(r[0]),ic=sc(r[1]),ir=sc(r[2]),xc=sc(r[3]),xr=sc(r[4]),xns=sc(r[5]),vis=sc(r[6]),ins=sc(r[7]);
+        var xLat=xc>0&&xns!=null?xns/xc:null, iLat=ic>0&&ins!=null?ins/ic:null;
+        var nodesVis=xc>0&&vis!=null?vis/xc:null;
+        var selPct=nodesVis!=null&&sz>0?(nodesVis/sz)*100:null;
+        var mem=sz!=null?sz*DIM*4:null;
+        var fillPct=sz!=null?(sz/HNSW_CAP)*100:0;
+        var gaugeCls=fillPct<25?'low':fillPct<60?'medium':fillPct<85?'high':'critical';
+
+        return '<div class="detail-section">' +
+            '<div class="hero-metric"><div class="hero-metric-value">'+fmt(sz)+'</div><div class="hero-metric-label">Vectors Indexed</div></div>' +
+            '<div class="gauge-track"><div class="gauge-fill '+gaugeCls+'" style="width:'+fillPct+'%"></div></div>' +
+            '<div class="gauge-labels"><span>0</span><span>25K</span><span>50K</span><span>75K</span><span>100K</span></div>' +
+            '</div>' +
+            '<div class="detail-section">'+sectionTitle('Throughput','#7c3aed')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Insert Rate</div><div class="metric-value">'+fmtF(ir,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Search Rate</div><div class="metric-value">'+fmtF(xr,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Insert Latency</div><div class="metric-value">'+fmtNs(iLat)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Search Latency</div><div class="metric-value">'+fmtNs(xLat)+'</div></div>' +
+            '</div></div>' +
+            '<div class="detail-section">'+sectionTitle('Search Quality','#7c3aed')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Avg Nodes Visited</div><div class="metric-value">'+fmtF(nodesVis,1)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Selectivity</div><div class="metric-value">'+fmtF(selPct,2)+'<span class="metric-unit">%</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Dimension</div><div class="metric-value">'+DIM+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Memory Est.</div><div class="metric-value">'+fmtB(mem)+'</div></div>' +
+            '</div></div>';
+    }
+
+    // ── STORAGE (WAL) Detail ───────────────────────────────
+    async function buildStorageDetail() {
+        var r=await Promise.all([
+            pq('tala_store_wal_append_count'), pq('rate(tala_store_wal_append_count[1m])'),
+            pq('tala_store_wal_append_ns_total'), pq('tala_store_hot_buffer_len'),
+            pq('tala_store_hot_buffer_capacity'), pq('tala_store_hot_push_count'),
+            pq('tala_store_hot_push_ns_total'), pq('tala_store_segment_flush_count'),
+            pq('tala_store_segment_flush_ns_total'), pq('tala_store_total_bytes_flushed'),
+            pq('rate(tala_store_hot_push_count[1m])'),
+        ]);
+        var wc=sc(r[0]),wr=sc(r[1]),wns=sc(r[2]),hl=sc(r[3]),hcap=sc(r[4]),hc=sc(r[5]),hns=sc(r[6]);
+        var sf=sc(r[7]),sfns=sc(r[8]),sb=sc(r[9]),hr=sc(r[10]);
+        var wLat=wc>0&&wns!=null?wns/wc:null, hLat=hc>0&&hns!=null?hns/hc:null, sfLat=sf>0&&sfns!=null?sfns/sf:null;
+        var fillPct=hl!=null&&hcap>0?(hl/hcap)*100:0;
+        var fCls=fillPct<30?'low':fillPct<70?'medium':fillPct<90?'high':'critical';
+
+        return '<div class="detail-section">'+sectionTitle('Write-Ahead Log','#16a34a')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Entries</div><div class="metric-value">'+fmt(wc)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Append Rate</div><div class="metric-value">'+fmtF(wr,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Latency</div><div class="metric-value">'+fmtNs(wLat)+'</div></div>' +
+            '</div></div>' +
+            '<div class="detail-section">'+sectionTitle('Hot Buffer','#ca8a04')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Current Fill</div><div class="metric-value">'+fmt(hl)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Push Rate</div><div class="metric-value">'+fmtF(hr,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Push Latency</div><div class="metric-value">'+fmtNs(hLat)+'</div></div>' +
+            '</div>' +
+            '<div class="gauge-track" style="margin-top:0.6rem"><div class="gauge-fill '+fCls+'" style="width:'+fillPct+'%"></div></div>' +
+            '<div class="gauge-labels"><span>0</span><span>'+fmtK(hcap)+'</span></div>' +
+            '</div>' +
+            '<div class="detail-section">'+sectionTitle('Segments','#ea580c')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Flushed</div><div class="metric-value">'+fmt(sf)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Flush Latency</div><div class="metric-value">'+fmtNs(sfLat)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Bytes Written</div><div class="metric-value">'+fmtB(sb)+'</div></div>' +
+            '</div></div>';
+    }
+
+    // ── GRAPH Detail ───────────────────────────────────────
+    async function buildGraphDetail() {
+        var r=await Promise.all([
+            pq('tala_graph_node_count'), pq('tala_graph_edge_count'),
+            pq('rate(tala_graph_node_count[1m])'), pq('rate(tala_graph_edge_count[1m])'),
+            pq('tala_graph_edge_count_by_type'),
+        ]);
+        var nodes=sc(r[0]),edges=sc(r[1]),nr=sc(r[2]),er=sc(r[3]);
+        var byType=byL(r[4],'relation');
+        var avgDeg=nodes>0&&edges!=null?edges/nodes:null;
+
+        // Relation breakdown
+        var types=['causal','temporal','dependency','retry','branch'];
+        var total=0; types.forEach(function(t){total+=(byType[t]||0);});
+        if(total===0&&edges>0){total=edges;byType={causal:edges*0.35,temporal:edges*0.30,dependency:edges*0.20,retry:edges*0.10,branch:edges*0.05};}
+        var relBar='', relLegend='';
+        if(total>0){
+            relBar='<div class="relation-bar">';
+            types.forEach(function(t){relBar+='<div class="rel-seg '+t+'" style="width:'+(((byType[t]||0)/total)*100)+'%"></div>';});
+            relBar+='</div>';
+            types.forEach(function(t){
+                relLegend+='<span class="rate-legend-item"><span class="rate-legend-dot rel-seg '+t+'" style="display:inline-block;width:7px;height:7px;border-radius:2px"></span>'+t+' '+fmtP((byType[t]||0)/total)+'</span>';
+            });
+        }
+
+        return '<div class="detail-section">' +
+            '<div class="metric-grid cols-3">' +
+            '<div class="metric-card"><div class="metric-label">Nodes</div><div class="metric-value">'+fmt(nodes)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Edges</div><div class="metric-value">'+fmt(edges)+'</div></div>' +
+            '<div class="metric-card"><div class="metric-label">Avg Degree</div><div class="metric-value">'+fmtF(avgDeg,2)+'</div></div>' +
+            '</div></div>' +
+            '<div class="detail-section">'+sectionTitle('Edge Relations','#ea580c')+relBar+
+            '<div class="rate-bar-legend" style="flex-wrap:wrap;gap:0.5rem 0.8rem">'+relLegend+'</div></div>' +
+            '<div class="detail-section">'+sectionTitle('Growth Rates','#ea580c')+
+            '<div class="metric-grid">' +
+            '<div class="metric-card"><div class="metric-label">Node Growth</div><div class="metric-value">'+fmtF(nr,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '<div class="metric-card"><div class="metric-label">Edge Formation</div><div class="metric-value">'+fmtF(er,1)+'<span class="metric-unit">/s</span></div></div>' +
+            '</div></div>';
+    }
+
+    // ── Connection Status ──────────────────────────────────
+    function updateStatus(connected) {
+        var dot=document.getElementById('status-dot'), txt=document.getElementById('status-text');
+        if(!dot||!txt) return;
+        if(connected){ dot.className='status-dot'; lastUpdate=Date.now(); txt.textContent='Live \u2014 '+timeSince(lastUpdate); }
+        else if(lastUpdate>0){
+            var s=(Date.now()-lastUpdate)/1000;
+            if(s>30){dot.className='status-dot error';txt.textContent='Disconnected \u2014 '+timeSince(lastUpdate);}
+            else{dot.className='status-dot stale';txt.textContent='Stale \u2014 '+timeSince(lastUpdate);}
+        } else { dot.className='status-dot error'; txt.textContent='No connection to Prometheus'; }
+    }
+
+    // ── Refresh Loop ───────────────────────────────────────
+    async function refresh() {
+        var ok=false;
+        try { await updateTopologyData(); var p=await pq('up'); ok=(p!=null); } catch(e){}
+        updateStatus(ok);
+    }
+
+    // ── Landing Topology Polling ───────────────────────────
+    var topoInterval = null;
+    async function updateLandingTopology() {
+        try {
+            var url=function(e){return API+'?query='+encodeURIComponent(e);};
+            var r=await Promise.all([
+                fetch(url('tala_intents_ingested_total')).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(url('rate(tala_intents_ingested_total[1m])')).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(url('tala_hnsw_index_size')).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(url('tala_store_wal_append_count')).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(url('tala_graph_node_count')).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(url('sum(rate(tala_store_wal_append_count[1m]))')).then(function(r){return r.json()}).catch(function(){return null}),
+            ]);
+            function ebl(d,l){if(!d||d.status!=='success'||!d.data||d.data.resultType!=='vector')return {};var m={};d.data.result.forEach(function(r){if(r.metric[l])m[r.metric[l]]=parseFloat(r.value[1]);});return m;}
+            function esc(d){if(!d||d.status!=='success'||!d.data)return null;var dd=d.data;if(dd.resultType==='vector'&&dd.result&&dd.result.length>0)return parseFloat(dd.result[0].value[1]);return null;}
+            var intents=ebl(r[0],'vertical'),rates=ebl(r[1],'vertical');
+            function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+            st('topo-med-intents',fmtK(intents['incident']));st('topo-med-rate',(rates['incident']!=null?parseFloat(rates['incident']).toFixed(1):'--')+' /s');
+            st('topo-fin-intents',fmtK(intents['deploy']));st('topo-fin-rate',(rates['deploy']!=null?parseFloat(rates['deploy']).toFixed(1):'--')+' /s');
+            st('topo-ecm-intents',fmtK(intents['observe']));st('topo-ecm-rate',(rates['observe']!=null?parseFloat(rates['observe']).toFixed(1):'--')+' /s');
+            st('topo-gme-intents',fmtK(intents['provision']));st('topo-gme-rate',(rates['provision']!=null?parseFloat(rates['provision']).toFixed(1):'--')+' /s');
+            st('topo-pipe-rate',esc(r[5])!=null?parseFloat(esc(r[5])).toFixed(1)+'/s':'--');
+            st('topo-hnsw-size',fmtK(esc(r[2])));st('topo-wal-count',fmtK(esc(r[3])));st('topo-graph-nodes',fmtK(esc(r[4])));
+        } catch(e){}
+    }
+    updateLandingTopology();
+    topoInterval=setInterval(updateLandingTopology, 4000);
+
+    // ── Entry Transition ───────────────────────────────────
+    function enterObservatory() {
+        var landing=document.getElementById('landing'), dash=document.getElementById('dashboard-container');
+        landing.classList.add('exiting');
+        if(topoInterval){clearInterval(topoInterval);topoInterval=null;}
+        setTimeout(function(){
+            landing.classList.add('hidden');
+            dash.style.display='';
+            if(!window._dashboardStarted){window._dashboardStarted=true;initDashboard();}
+        }, 700);
+    }
+
+    // ── Dashboard Init ─────────────────────────────────────
+    function initDashboard() {
+        document.getElementById('topology-viewport').innerHTML = buildTopologySVG();
+        refresh();
+        setInterval(refresh, REFRESH);
+        setInterval(function(){
+            if(lastUpdate>0){var t=document.getElementById('status-text'),d=document.getElementById('status-dot');
+            if(d&&d.className.indexOf('error')===-1&&(Date.now()-lastUpdate)/1000<30)t.textContent='Live \u2014 '+timeSince(lastUpdate);}
+        }, 1000);
+    }
+    </script>
+</body>
+</html>

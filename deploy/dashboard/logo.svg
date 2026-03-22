@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 360" fill="none">
+  <!-- Main ring -->
+  <circle cx="150" cy="140" r="90" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.75"/>
+
+  <!-- Orbital curve 1: node at 0deg (240,140) to node at 180deg (60,140) -->
+  <path d="M 240,140 C 200,80 100,80 60,140" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 60,140 C 100,200 200,200 240,140" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+  <!-- Orbital curve 2: node at 60deg (195,62.04) to node at 240deg (105,217.96) -->
+  <path d="M 195,62 C 220,120 160,200 105,218" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 105,218 C 80,160 140,80 195,62" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+  <!-- Orbital curve 3: node at 120deg (105,62.04) to node at 300deg (195,217.96) -->
+  <path d="M 105,62 C 80,120 140,200 195,218" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 195,218 C 220,160 160,80 105,62" stroke="#1a1d23" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+  <!-- 6 node circles at 60-degree intervals — accent-tinted -->
+  <circle cx="240" cy="140" r="8" fill="#2563eb" stroke="none" opacity="0.85"/>
+  <circle cx="195" cy="62"  r="8" fill="#1a1d23" stroke="none" opacity="0.7"/>
+  <circle cx="105" cy="62"  r="8" fill="#2563eb" stroke="none" opacity="0.85"/>
+  <circle cx="60"  cy="140" r="8" fill="#1a1d23" stroke="none" opacity="0.7"/>
+  <circle cx="105" cy="218" r="8" fill="#2563eb" stroke="none" opacity="0.85"/>
+  <circle cx="195" cy="218" r="8" fill="#1a1d23" stroke="none" opacity="0.7"/>
+
+  <!-- TALA text -->
+  <text x="150" y="290" text-anchor="middle" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="28" font-weight="600" letter-spacing="0.3em" fill="#1a1d23" stroke="none" opacity="0.85">T A L A</text>
+</svg>

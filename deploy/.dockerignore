@@ -1,0 +1,7 @@
+target/
+.git/
+specs/
+.claude/
+deploy/prometheus/
+deploy/grafana/
+deploy/dashboard/

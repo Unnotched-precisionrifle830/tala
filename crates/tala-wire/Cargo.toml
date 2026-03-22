@@ -1,0 +1,16 @@
+[package]
+name = "tala-wire"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tala-core = { path = "../tala-core" }
+
+[dev-dependencies]
+criterion = { workspace = true }
+rand = { workspace = true }
+tempfile = { workspace = true }
+
+[[bench]]
+name = "wire_bench"
+harness = false
