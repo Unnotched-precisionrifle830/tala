@@ -10,6 +10,17 @@
 </p>
 
 <p align="center">
+  <img alt="Rust" src="https://img.shields.io/badge/rust-1.82%2B-b7410e?style=flat-square&logo=rust">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue?style=flat-square">
+  <img alt="AI" src="https://img.shields.io/badge/AI-embeddings%20%C2%B7%20HNSW%20%C2%B7%20semantic%20search-6c3ecb?style=flat-square">
+  <img alt="Linux" src="https://img.shields.io/badge/linux-systems%20layer-333?style=flat-square&logo=linux&logoColor=white">
+</p>
+
+<p align="center">
+  <code>rust</code> <code>ai</code> <code>machine-learning</code> <code>embeddings</code> <code>vector-search</code> <code>semantic-search</code> <code>linux</code> <code>operating-systems</code> <code>observability</code> <code>chaos-engineering</code> <code>devops</code> <code>sre</code> <code>narrative-graph</code> <code>intent</code> <code>developer-tools</code> <code>systems-programming</code>
+</p>
+
+<p align="center">
   <a href="#what-is-tala">What is TALA</a> &middot;
   <a href="#architecture">Architecture</a> &middot;
   <a href="#quick-start">Quick Start</a> &middot;
